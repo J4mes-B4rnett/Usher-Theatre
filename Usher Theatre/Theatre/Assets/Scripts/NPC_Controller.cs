@@ -19,6 +19,8 @@ public class NPC_Controller : MonoBehaviour
     
     NavMeshAgent agent;
 
+    public GameObject rubbish;
+
     //Action List
     // 1 - Rubbish Drop
     // 2 - Question
@@ -66,6 +68,7 @@ public class NPC_Controller : MonoBehaviour
             {
                 case 1:
                     Debug.Log("Drop Rubbish");
+                    Instantiate(rubbish, transform.position, Quaternion.identity);
                     break;
                 case 2:
                     Debug.Log("Question");
