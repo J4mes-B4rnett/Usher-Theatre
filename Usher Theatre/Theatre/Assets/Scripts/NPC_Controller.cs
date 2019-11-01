@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class NPC_Controller : MonoBehaviour
 {
@@ -20,6 +21,13 @@ public class NPC_Controller : MonoBehaviour
     NavMeshAgent agent;
 
     public GameObject rubbish;
+    public GameObject iconObj;
+    public Image icon;
+    
+    public Sprite angry;
+    public Sprite confused;
+
+    public bool inProgress = false;
 
     //Action List
     // 1 - Rubbish Drop
@@ -57,6 +65,12 @@ public class NPC_Controller : MonoBehaviour
 
     void Update()
     {
+        if (inProgress){
+            iconObj.SetActive(true);
+        } else {
+            iconObj.SetActive(false);
+        }
+
         movementTicks += Time.deltaTime;
         actionTicks += Time.deltaTime;
         if (actionTicks >= randomActionTick){
@@ -74,9 +88,13 @@ public class NPC_Controller : MonoBehaviour
                     break;
                 case 2:
                     Debug.Log("Question");
+                    icon.sprite = confused;
+                    inProgress = true;
                     break;
                 case 3:
                     Debug.Log("Argument");
+                    icon.sprite = angry;
+                    inProgress = true;
                     break;
             }
         }
