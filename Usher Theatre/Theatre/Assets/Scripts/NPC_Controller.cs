@@ -35,7 +35,7 @@ public class NPC_Controller : MonoBehaviour
     // 3 - Argument
 
     public float getRandomFloat(float range1, float range2){
-        return Random.Range(range1, range2);;
+        return Random.Range(range1, range2);
     }
 
     public Vector3 getRandomPosition(){
@@ -45,10 +45,10 @@ public class NPC_Controller : MonoBehaviour
     void Start(){
         agent = GetComponent<NavMeshAgent>();
 
-        randomMovementTick = Random.Range(5f, 10f);
+        randomMovementTick = Random.Range(2f, 40f);
         movementTicks = 0f;
 
-        randomActionTick = Random.Range(20f, 30f);
+        randomActionTick = Random.Range(5f, 150f);
         actionTicks = 0f;
 
         for (int i = 0; i < RubbishDropRange; i++){
