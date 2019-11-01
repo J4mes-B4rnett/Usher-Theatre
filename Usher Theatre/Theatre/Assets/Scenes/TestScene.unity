@@ -2100,7 +2100,7 @@ PrefabInstance:
         type: 3}
       propertyPath: rubbish
       value: 
-      objectReference: {fileID: 6655703179443890845, guid: 1fbc36ac1a825f14b89974008aa72293,
+      objectReference: {fileID: 8369022241142713266, guid: b09d2e301e8df284e8e4f74c082f09e5,
         type: 3}
     - target: {fileID: 2598340531185293485, guid: 7dd41c5e36a478d4bacdbbe17dd0c579,
         type: 3}
@@ -4463,7 +4463,7 @@ GameObject:
   - component: {fileID: 1687258587}
   - component: {fileID: 1687258586}
   m_Layer: 0
-  m_Name: Main Camera
+  m_Name: Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
