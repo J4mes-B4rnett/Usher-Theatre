@@ -5,85 +5,89 @@ using UnityEngine.AI;
 
 public class NPC_Controller : MonoBehaviour
 {
-    public bool inAction = false;
-
-    public float randomActionTick = 0f;
-    public float randomMovementTick = 0f;
-    public float actionTicks = 0f;
-    public float movementTicks = 0f;
-
     public List<int> probabilities = new List<int>();
-    public int RubbishDropRange = 5;
-    public int QuestionRange = 4;
-    public int ArgumentRange = 1;
     
     NavMeshAgent agent;
 
     public GameObject rubbish;
 
-    //Action List
-    // 1 - Rubbish Drop
-    // 2 - Question
-    // 3 - Argument
-
-    public float getRandomFloat(float range1, float range2){
-        return Random.Range(range1, range2);;
-    }
-
-    public Vector3 getRandomPosition(){
-       return new Vector3(getRandomFloat(-3f, 25.25f), getRandomFloat(0f, 0f), getRandomFloat(3f, -40f));
-    }
+    public string[] functions = { "GarbageDrop", "GoToilet", "WhereIsTheBuffet", "WhereIsMyScreen", "WannaArgument" };
+    public int[] probabilityRates = { 10, 3, 3, 3, 1 };
+    public int maxWaitingTime = 4;
+    int currentWaitingTime = 4;
+    Vector3 agentDestination;
+    GameObject floor;
 
     void Start(){
+         
+        ProbabilityOrganizer();
         agent = GetComponent<NavMeshAgent>();
-
-        randomMovementTick = Random.Range(5f, 10f);
-        movementTicks = 0f;
-
-        randomActionTick = Random.Range(20f, 30f);
-        actionTicks = 0f;
-
-        for (int i = 0; i < RubbishDropRange; i++){
-            probabilities.Add(1);
-        }
-        for (int i = 0; i < QuestionRange; i++){
-            probabilities.Add(2);
-        }
-        for (int i = 0; i < ArgumentRange; i++){
-            probabilities.Add(3);
+        InvokeRepeating("Timer", currentWaitingTime, currentWaitingTime);
+        InvokeRepeating("SetAgentDestination", 0, 5);
+    }
+    void OnCollisionEnter(Collision col)
+    {
+        if(floor == null)
+        {
+            Debug.Log(col.gameObject.name);
+            floor = col.gameObject;
         }
     }
-    
 
-    void Update()
+    void SetAgentDestination()
     {
-        movementTicks += Time.deltaTime;
-        actionTicks += Time.deltaTime;
-        if (actionTicks >= randomActionTick){
-            actionTicks = 0f;
-            randomActionTick = Random.Range(20f, 30f);
-            int i = Random.Range(0, probabilities.Count);
+       
+        //Throw a random position inside the room based on the floor
+        float posX = Random.Range((floor.transform.position.x - (floor.transform.localScale.x / 2)), (floor.transform.position.x + (floor.transform.localScale.x / 2)));
+        float posZ = Random.Range((floor.transform.position.z - (floor.transform.localScale.z / 2)), (floor.transform.position.z + (floor.transform.localScale.z / 2)));
 
-            switch (probabilities[i])
+        // Set it to the agent as destination
+        agentDestination = new Vector3(posX, transform.position.y, posZ);
+        agent.SetDestination(agentDestination);
+
+    }
+
+    void ProbabilityOrganizer()
+    {
+        for(int i = 0; i < functions.Length; i++)
+        {
+            for(int b = 0;b < probabilityRates[i]; b++)
             {
-                case 1:
-                    Debug.Log("Drop Rubbish");
-                    Instantiate(rubbish, transform.position, Quaternion.identity);
-                    break;
-                case 2:
-                    Debug.Log("Question");
-                    break;
-                case 3:
-                    Debug.Log("Argument");
-                    break;
+                probabilities.Add(i);
             }
         }
-
-        if (movementTicks > randomMovementTick){
-            movementTicks = 0f;
-            randomMovementTick = Random.Range(5f, 10f);
-
-            agent.SetDestination(getRandomPosition());
+        foreach(int i in probabilities)
+        {
+            Debug.Log(i);
         }
+    }
+
+    void Timer()
+    {
+        currentWaitingTime = Random.Range(1, maxWaitingTime + 1);
+
+        int randomActionIndex = Random.Range(0, probabilities.Count);
+        Invoke(functions[probabilities[randomActionIndex]], 0);
+        
+    }
+    void GarbageDrop()
+    {
+        Debug.Log("Garbage has been dropped");
+    }
+    void GoToilet()
+    {
+        Debug.Log("Where is the toilet?");
+    }
+    void WhereIsTheBuffet()
+    {
+        Debug.Log("Where is the buffet?");
+    }
+    void WhereIsMyScreen()
+    {
+        Debug.Log("I have this scne number:. Where can I find it?");
+    }
+    void WannaArgument()
+    {
+        Debug.Log("I hate you, bitch!");
     }
 }
