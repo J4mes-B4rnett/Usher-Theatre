@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class NPC_Controller : MonoBehaviour
 {
@@ -18,13 +19,29 @@ public class NPC_Controller : MonoBehaviour
     Vector3 agentDestination;
     GameObject floor;
 
+    public Image moodIcon;
+    public GameObject moodIconObj;
+
+    public Sprite angry;
+    public Sprite question;
+
+    public bool actionInProgress = false;
+
     void Start(){
          
         ProbabilityOrganizer();
         agent = GetComponent<NavMeshAgent>();
         InvokeRepeating("Timer", currentWaitingTime, currentWaitingTime);
         InvokeRepeating("SetAgentDestination", 0, 5);
+        moodIconObj.SetActive(false);
     }
+
+    void Update(){
+        if (actionInProgress){
+            moodIconObj.SetActive(true);
+        }
+    }
+
     void OnCollisionEnter(Collision col)
     {
         if(floor == null)
@@ -72,22 +89,32 @@ public class NPC_Controller : MonoBehaviour
     }
     void GarbageDrop()
     {
-        Debug.Log("Garbage has been dropped");
+        actionInProgress = true;
+        Debug.Log("*Drops Trash");
+        moodIcon.sprite = angry;
     }
     void GoToilet()
     {
+        actionInProgress = true;
         Debug.Log("Where is the toilet?");
+        moodIcon.sprite = question;
     }
     void WhereIsTheBuffet()
     {
+        actionInProgress = true;
         Debug.Log("Where is the buffet?");
+        moodIcon.sprite = question;
     }
     void WhereIsMyScreen()
     {
-        Debug.Log("I have this scne number:. Where can I find it?");
+        actionInProgress = true;
+        Debug.Log("I have this screen number. Where can I find it?");
+        moodIcon.sprite = question;
     }
     void WannaArgument()
     {
-        Debug.Log("I hate you, bitch!");
+        actionInProgress = true;
+        Debug.Log("I hate you!");
+        moodIcon.sprite = angry;
     }
 }
