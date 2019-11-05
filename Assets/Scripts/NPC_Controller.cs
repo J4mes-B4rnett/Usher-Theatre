@@ -40,6 +40,18 @@ public class NPC_Controller : MonoBehaviour
         if (actionInProgress){
             moodIconObj.SetActive(true);
         }
+
+         // Check if we've reached the destination
+        if (!agent.pathPending)
+        {
+            if (agent.remainingDistance <= agent.stoppingDistance)
+            {
+                if (!agent.hasPath || agent.velocity.sqrMagnitude == 0f)
+                {
+                    
+                }
+            }
+        }
     }
 
     void OnCollisionEnter(Collision col)
