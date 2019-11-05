@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class FaceCamera : MonoBehaviour
 {
-    Camera cam;
+    Transform cam;
 
     void Awake(){
-        cam = Camera.main;
+        cam = Camera.main.transform;
     }
 
     void Update()
     {
-        Vector3 targetVector = this.transform.position - cam.transform.position;
-        transform.rotation = Quaternion.LookRotation(targetVector, cam.transform.rotation * Vector3.up);
+          transform.LookAt(transform.position + cam.rotation * Vector3.back, cam.rotation * Vector3.up);
     }
 }
