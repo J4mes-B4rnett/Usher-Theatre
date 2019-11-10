@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public abstract class PatronState
+public abstract class State
 {
-     public Patron patron;
+     public Humanoid owner;
      public string stateName;
 
-     public PatronState(Patron patron, string stateName)
+     public State(Humanoid owner, string stateName)
      {
-          this.patron = patron;
+          this.owner = owner;
           this.stateName = stateName;
      }
 
